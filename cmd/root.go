@@ -24,7 +24,7 @@ and copies the file contents to your clipboard when finished.`,
 
 		Run: func(cmd *cobra.Command, args []string) {
 			for _, arg := range args {
-				notes.WriteNote(arg, date)
+				notes.WriteNoteAndHW(arg, date)
 			}
 		},
 	}

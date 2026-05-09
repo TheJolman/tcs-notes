@@ -14,15 +14,22 @@ const appName = "tcs-notes"
 var notesDir = path.Join(xdg.DataHome, appName, "students")
 var configDir = path.Join(xdg.ConfigHome, appName)
 
-func WriteNote(studentName string, date string) error {
-	studentDir := path.Join(notesDir, studentName)
-	if err := os.MkdirAll(studentDir, os.ModePerm); err != nil {
+func WriteNoteAndHW(studentName string, date string) error {
+	// date must be in mm-dd format
+	// TODO: use time.Time instead
+	studentDateDir := path.Join(notesDir, studentName, date)
+	if err := os.MkdirAll(studentDateDir, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create student folder: %v", err)
 	}
-	filepath := path.Join(studentDir, date+".md")
-	err := writeFile(filepath)
-	if err != nil {
+	// Write note
+	notePath := path.Join(studentDateDir, "note.md")
+	if err := writeFile(notePath); err != nil {
 		return fmt.Errorf("failed to create note: %v", err)
+	}
+	// Write homework
+	hwPath := path.Join(studentDateDir, "hw.md")
+	if err := writeFile(hwPath); err != nil {
+		return fmt.Errorf("failed to create hemework: %v", err)
 	}
 	return nil
 }
