@@ -5,20 +5,26 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"time"
 
 	"github.com/adrg/xdg"
 )
 
 const appName = "tcs-notes"
+const timeLayout = "01-02"
 
 var notesDir = path.Join(xdg.DataHome, appName, "students")
 var configDir = path.Join(xdg.ConfigHome, appName)
 
+// date must be in mm-dd format
 func WriteNoteAndHW(studentName string, date string) error {
-	// date must be in mm-dd format
-	// TODO: parse to time.Time
 	if date == "" {
-		date = "01-01"
+		currTime := time.Now()
+		date = currTime.Format(timeLayout)
+	} else {
+		if _, err := time.Parse(timeLayout, date); err != nil {
+			return fmt.Errorf("invalid date format")
+		}
 	}
 	studentDateDir := path.Join(notesDir, studentName, date)
 	if err := os.MkdirAll(studentDateDir, os.ModePerm); err != nil {
