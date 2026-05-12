@@ -1,3 +1,4 @@
+default: build
 alias fmt := format
 
 format:
