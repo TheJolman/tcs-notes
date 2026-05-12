@@ -11,7 +11,9 @@ import (
 )
 
 var (
-	date string
+	editNote bool
+	editHW   bool
+	date     string
 
 	rootCmd = &cobra.Command{
 		Use:   "tcs-notes <student-names>",
@@ -20,11 +22,22 @@ var (
 for specified student(s).
 
 It uses editable tamplate files that open open in your text editor
-and copies the file contents to your clipboard when finished.`,
+and copies the file contents to your clipboard when finished.
+If this is your first time running this program, run with --edit-note and
+--edit-hw to customize your template files.`,
 
 		Run: func(cmd *cobra.Command, args []string) {
+			if editNote {
+				cobra.CheckErr(notes.WriteNoteTemplate())
+				return
+			}
+			if editHW {
+				cobra.CheckErr(notes.WriteHWTemplate())
+				return
+			}
 			for _, arg := range args {
-				notes.WriteNoteAndHW(arg, date)
+				err := notes.WriteNoteAndHW(arg, date)
+				cobra.CheckErr(err)
 			}
 		},
 	}
@@ -40,6 +53,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.Flags().StringVarP(&date, "date", "d", "01-02", "Edit a note that's not from today")
+	rootCmd.Flags().BoolVar(&editNote, "edit-note", false, "Edit note template")
+	rootCmd.Flags().BoolVar(&editHW, "edit-hw", false, "Edit homework template")
+	rootCmd.Flags().StringVarP(&date, "date", "d", "", "Edit a note that's not from today")
 }
