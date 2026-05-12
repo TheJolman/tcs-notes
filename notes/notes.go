@@ -60,6 +60,7 @@ func WriteHWTemplate() error {
 
 func writeFile(filepath string) error {
 	editor := os.Getenv("EDITOR")
+	// TODO: this could be made more robust, especially for windows users.
 	if editor == "" {
 		editor = "nano"
 	}
