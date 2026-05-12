@@ -16,7 +16,10 @@ var configDir = path.Join(xdg.ConfigHome, appName)
 
 func WriteNoteAndHW(studentName string, date string) error {
 	// date must be in mm-dd format
-	// TODO: use time.Time instead
+	// TODO: parse to time.Time
+	if date == "" {
+		date = "01-01"
+	}
 	studentDateDir := path.Join(notesDir, studentName, date)
 	if err := os.MkdirAll(studentDateDir, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create student folder: %v", err)
