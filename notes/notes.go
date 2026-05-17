@@ -10,11 +10,17 @@ import (
 	"github.com/adrg/xdg"
 )
 
-const appName = "tcs-notes"
-const timeLayout = "01-02"
+const (
+	appName    = "tcs-notes"
+	timeLayout = "01-02"
+)
 
-var notesDir = path.Join(xdg.DataHome, appName, "students")
-var configDir = path.Join(xdg.ConfigHome, appName)
+var (
+	notesDir         = path.Join(xdg.DataHome, appName, "students")
+	configDir        = path.Join(xdg.ConfigHome, appName)
+	noteTemplatePath = path.Join(configDir, "note_template.md")
+	hwTemplatePath   = path.Join(configDir, "hw_template.txt")
+)
 
 // date must be in mm-dd format
 func WriteNoteAndHW(studentName string, date string) error {
@@ -48,8 +54,7 @@ func WriteNoteTemplate() error {
 		return fmt.Errorf("failed to create config directory: %v", err)
 	}
 
-	templatePath := path.Join(configDir, "note_template.md")
-	if err := writeFile(templatePath); err != nil {
+	if err := writeFile(noteTemplatePath); err != nil {
 		return fmt.Errorf("failed to create note template: %v", err)
 	}
 	return nil
@@ -60,8 +65,7 @@ func WriteHWTemplate() error {
 		return fmt.Errorf("failed to create config directory: %v", err)
 	}
 
-	templatePath := path.Join(configDir, "hw_template.txt")
-	if err := writeFile(templatePath); err != nil {
+	if err := writeFile(hwTemplatePath); err != nil {
 		return fmt.Errorf("failed to create hw template: %v", err)
 	}
 	return nil
