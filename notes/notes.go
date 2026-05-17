@@ -71,6 +71,8 @@ func WriteHWTemplate() error {
 	return nil
 }
 
+// ==== UTILITIES ==================================================================================
+
 func writeFile(filepath string) error {
 	editor := os.Getenv("EDITOR")
 	// TODO: this could be made more robust, especially for windows users.
