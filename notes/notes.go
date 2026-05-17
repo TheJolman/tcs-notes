@@ -1,6 +1,7 @@
 package notes
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -90,4 +91,9 @@ func writeFile(filepath string) error {
 
 	err := cmd.Run()
 	return err
+}
+
+func checkFileExists(filepath string) bool {
+	_, err := os.Stat(filepath)
+	return !errors.Is(err, os.ErrNotExist)
 }
