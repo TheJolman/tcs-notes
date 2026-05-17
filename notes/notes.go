@@ -3,6 +3,7 @@ package notes
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path"
@@ -38,13 +39,25 @@ func WriteNoteAndHW(studentName string, date string) error {
 	if err := os.MkdirAll(studentDateDir, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create student folder: %v", err)
 	}
+
 	// Write note
 	notePath := path.Join(studentDateDir, "note.md")
+	if checkFileExists(noteTemplatePath) {
+		if err := copyFile(noteTemplatePath, notePath); err != nil {
+			return fmt.Errorf("failed to copy template into note: %v", err)
+		}
+	}
 	if err := writeFile(notePath); err != nil {
 		return fmt.Errorf("failed to create note: %v", err)
 	}
+
 	// Write homework
 	hwPath := path.Join(studentDateDir, "hw.txt")
+	if checkFileExists(hwTemplatePath) {
+		if err := copyFile(hwTemplatePath, hwPath); err != nil {
+			return fmt.Errorf("failed to copy template into hw: %v", err)
+		}
+	}
 	if err := writeFile(hwPath); err != nil {
 		return fmt.Errorf("failed to create hemework: %v", err)
 	}
@@ -77,6 +90,7 @@ func WriteHWTemplate() error {
 
 // ==== UTILITIES ==================================================================================
 
+// Opens file in text editor for user to edit
 func writeFile(filepath string) error {
 	editor := os.Getenv("EDITOR")
 	// TODO: this could be made more robust, especially for windows users.
@@ -96,4 +110,22 @@ func writeFile(filepath string) error {
 func checkFileExists(filepath string) bool {
 	_, err := os.Stat(filepath)
 	return !errors.Is(err, os.ErrNotExist)
+}
+
+// Creates dest and copies source into it
+func copyFile(source string, dest string) error {
+	s, err := os.Open(source)
+	if err != nil {
+		return err
+	}
+	defer s.Close()
+
+	d, err := os.Create(dest)
+	if err != nil {
+		return err
+	}
+	defer d.Close()
+
+	io.Copy(d, s)
+	return nil
 }
