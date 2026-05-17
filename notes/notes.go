@@ -22,7 +22,8 @@ var (
 	hwTemplatePath   = path.Join(configDir, "hw_template.txt")
 )
 
-// date must be in mm-dd format
+// Open note, then hw file in editor for user to edit.
+// Date must be in mm-dd format.
 func WriteNoteAndHW(studentName string, date string) error {
 	if date == "" {
 		currTime := time.Now()
@@ -49,6 +50,7 @@ func WriteNoteAndHW(studentName string, date string) error {
 	return nil
 }
 
+// Opens note template in editor for user to create/edit
 func WriteNoteTemplate() error {
 	if err := os.MkdirAll(configDir, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create config directory: %v", err)
@@ -60,6 +62,7 @@ func WriteNoteTemplate() error {
 	return nil
 }
 
+// Opens hw template in editor for user to create/edit
 func WriteHWTemplate() error {
 	if err := os.MkdirAll(configDir, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create config directory: %v", err)
