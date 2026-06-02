@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/adrg/xdg"
-	"github.com/atotto/clipboard"
+	// "github.com/atotto/clipboard"
 )
 
 const (
