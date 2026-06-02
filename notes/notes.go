@@ -43,7 +43,7 @@ func WriteNoteAndHW(studentName string, date string) error {
 
 	// Write note
 	notePath := path.Join(studentDateDir, "note.md")
-	if checkFileExists(noteTemplatePath) {
+	if fileExists(noteTemplatePath) && !fileExists(notePath) {
 		if err := copyFile(noteTemplatePath, notePath); err != nil {
 			return fmt.Errorf("failed to copy template into note: %v", err)
 		}
@@ -54,7 +54,7 @@ func WriteNoteAndHW(studentName string, date string) error {
 
 	// Write homework
 	hwPath := path.Join(studentDateDir, "hw.txt")
-	if checkFileExists(hwTemplatePath) {
+	if fileExists(hwTemplatePath) && !fileExists(hwPath) {
 		if err := copyFile(hwTemplatePath, hwPath); err != nil {
 			return fmt.Errorf("failed to copy template into hw: %v", err)
 		}
@@ -108,7 +108,8 @@ func editFile(filepath string) error {
 	return err
 }
 
-func checkFileExists(filepath string) bool {
+// returns true if file exists
+func fileExists(filepath string) bool {
 	_, err := os.Stat(filepath)
 	return !errors.Is(err, os.ErrNotExist)
 }
