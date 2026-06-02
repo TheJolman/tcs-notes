@@ -15,7 +15,7 @@ import (
 
 const (
 	appName    = "tcs-notes"
-	timeLayout = "01-02"
+	timeLayout = "01-02-06"
 )
 
 var (
@@ -26,7 +26,7 @@ var (
 )
 
 // Open note, then hw file in editor for user to edit.
-// Date must be in mm-dd format.
+// Date must be in mm-dd-yy format.
 func WriteNoteAndHW(studentName string, date string) error {
 	if date == "" {
 		currTime := time.Now()
