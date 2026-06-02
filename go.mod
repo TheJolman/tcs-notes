@@ -4,6 +4,7 @@ go 1.25.5
 
 require (
 	github.com/adrg/xdg v0.5.3
+	github.com/atotto/clipboard v0.1.4
 	github.com/spf13/cobra v1.10.2
 )
 
