@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/adrg/xdg"
-	// "github.com/atotto/clipboard"
+	"github.com/atotto/clipboard"
 )
 
 const (
@@ -51,6 +51,14 @@ func WriteNoteAndHW(studentName string, date string) error {
 	if err := editFile(notePath); err != nil {
 		return fmt.Errorf("failed to create note: %v", err)
 	}
+	// copy note to clipboard
+	{
+		noteContents, err := os.ReadFile(notePath)
+		err = clipboard.WriteAll(string(noteContents))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Warning: failed to copy contents of note to clipboard")
+		}
+	}
 
 	// Write homework
 	hwPath := path.Join(studentDateDir, "hw.txt")
@@ -62,6 +70,15 @@ func WriteNoteAndHW(studentName string, date string) error {
 	if err := editFile(hwPath); err != nil {
 		return fmt.Errorf("failed to create hemework: %v", err)
 	}
+	// copy note to clipboard
+	{
+		hwContents, err := os.ReadFile(hwPath)
+		err = clipboard.WriteAll(string(hwContents))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "Warning: failed to copy contents of hw to clipboard")
+		}
+	}
+
 	return nil
 }
 
