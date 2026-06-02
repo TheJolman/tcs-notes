@@ -48,7 +48,7 @@ func WriteNoteAndHW(studentName string, date string) error {
 			return fmt.Errorf("failed to copy template into note: %v", err)
 		}
 	}
-	if err := writeFile(notePath); err != nil {
+	if err := editFile(notePath); err != nil {
 		return fmt.Errorf("failed to create note: %v", err)
 	}
 
@@ -59,7 +59,7 @@ func WriteNoteAndHW(studentName string, date string) error {
 			return fmt.Errorf("failed to copy template into hw: %v", err)
 		}
 	}
-	if err := writeFile(hwPath); err != nil {
+	if err := editFile(hwPath); err != nil {
 		return fmt.Errorf("failed to create hemework: %v", err)
 	}
 	return nil
@@ -71,7 +71,7 @@ func WriteNoteTemplate() error {
 		return fmt.Errorf("failed to create config directory: %v", err)
 	}
 
-	if err := writeFile(noteTemplatePath); err != nil {
+	if err := editFile(noteTemplatePath); err != nil {
 		return fmt.Errorf("failed to create note template: %v", err)
 	}
 	return nil
@@ -83,7 +83,7 @@ func WriteHWTemplate() error {
 		return fmt.Errorf("failed to create config directory: %v", err)
 	}
 
-	if err := writeFile(hwTemplatePath); err != nil {
+	if err := editFile(hwTemplatePath); err != nil {
 		return fmt.Errorf("failed to create hw template: %v", err)
 	}
 	return nil
@@ -92,7 +92,7 @@ func WriteHWTemplate() error {
 // ==== UTILITIES ==================================================================================
 
 // Opens file in text editor for user to edit
-func writeFile(filepath string) error {
+func editFile(filepath string) error {
 	editor := os.Getenv("EDITOR")
 	// TODO: this could be made more robust, especially for windows users.
 	if editor == "" {
