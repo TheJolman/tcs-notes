@@ -4,6 +4,7 @@ Copyright © 2026 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -35,10 +36,14 @@ If this is your first time running this program, run with --edit-note and
 				cobra.CheckErr(notes.WriteHWTemplate())
 				return
 			}
-			for _, arg := range args {
-				err := notes.WriteNoteAndHW(arg, date)
-				cobra.CheckErr(err)
+			fullName := args[0]
+			if len(args) > 1 {
+				for i := 1; i < len(args); i++ {
+					fullName = fmt.Sprintf("%s_%s", fullName, args[i])
+				}
 			}
+			err := notes.WriteNoteAndHW(fullName, date)
+			cobra.CheckErr(err)
 		},
 	}
 )
